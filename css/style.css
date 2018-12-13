@@ -1,0 +1,25 @@
+.inline-input {
+  border: 0;
+  box-shadow: none;
+  padding: 1em .3em;
+}
+
+.inline-input:focus {
+  box-shadow: none;
+}
+
+ul#not-your-man {
+  list-style-type: none;
+  padding-left: 1em;
+  margin: 0;
+}
+
+ul#not-your-man li:before {
+  content: "–";
+  position: absolute;
+  margin-left: -1em;
+}
+
+.footer {
+  margin: 2em 0;
+}
