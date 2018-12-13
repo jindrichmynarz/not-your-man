@@ -1,0 +1,53 @@
+{
+  "head" : {
+    "vars" : [ "label", "notyourman" ]
+  },
+  "results" : {
+    "bindings" : [ {
+      "label" : {
+        "type" : "literal",
+        "value" : "a library"
+      },
+      "notyourman" : {
+        "type" : "literal",
+        "value" : "is not a paper museum"
+      }
+    }, {
+      "label" : {
+        "type" : "literal",
+        "value" : "a library"
+      },
+      "notyourman" : {
+        "type" : "literal",
+        "value" : "is not a library building"
+      }
+    }, {
+      "label" : {
+        "type" : "literal",
+        "value" : "a library"
+      },
+      "notyourman" : {
+        "type" : "literal",
+        "value" : "is located in a library building"
+      }
+    }, {
+      "label" : {
+        "type" : "literal",
+        "value" : "a library"
+      },
+      "notyourman" : {
+        "type" : "literal",
+        "value" : "is a GLAM"
+      }
+    }, {
+      "label" : {
+        "type" : "literal",
+        "value" : "a library"
+      },
+      "notyourman" : {
+        "type" : "literal",
+        "value" : "is a collection"
+      }
+    } ]
+  }
+}

@@ -1,0 +1,73 @@
+PREFIX hint: <http://www.bigdata.com/queryHints#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX wd:   <http://www.wikidata.org/entity/>
+PREFIX wdt:  <http://www.wikidata.org/prop/direct/>
+
+SELECT ?label ?notyourman
+WHERE {
+  hint:Query hint:optimizer "None" .
+  {
+    SELECT ?label ?object ?verb ?hasArticle
+    WHERE {
+      {
+        SELECT ?thing 
+               (if(lcase(substr(str(?_label), 1, 1)) IN ("a", "e", "i", "o", "y"),
+                   concat("an ", ?_label),
+                   concat("a ", ?_label)) AS ?label)
+        WHERE {
+          {
+            SELECT ?thing
+            WHERE {
+              {
+                SELECT ?class (struuid() AS ?index)
+                WHERE {
+                  VALUES ?class {
+                    wd:Q212920 # Home applicance
+                    wd:Q2424752 # Product
+                    wd:Q3314483 # Fruit
+                    wd:Q39546 # Tool
+                    wd:Q43229 # Organization
+                    wd:Q815741 # Geometric shape
+                    wd:Q11004 # Vegetable
+                  }
+                }
+                ORDER BY ?index
+                LIMIT 1
+              }
+              ?thing wdt:P279+ ?class ;
+                wdt:P276|wdt:P279|wdt:P366|wdt:P462|wdt:P495|wdt:P527|wdt:P1889 ?object .
+            }
+            GROUP BY ?thing 
+            HAVING (COUNT(?object) > 4)
+          }
+          ?thing rdfs:label ?_label .
+          FILTER (lang(?_label) = "en"
+                  &&
+                  # Attempt to avoid proper nouns
+                  ucase(substr(str(?_label), 1, 1)) != substr(str(?_label), 1, 1)
+                  &&
+                  # Attempt to avoid plurals
+                  !strends(?_label, "s"))
+        }
+        LIMIT 1
+      }
+      VALUES (?property ?verb           ?hasArticle) {
+             (wdt:P276  "is located in" true) # Location
+             (wdt:P279  "is"            true) # Subclass of
+             (wdt:P366  "is used for"   false) # Use
+             (wdt:P462  "is"            false) # Colour
+             (wdt:P495  "is from"       false) # Country of origin
+             (wdt:P527  "has"           true) # Has part
+             (wdt:P1889 "is not"        true) # Different from
+      }
+      ?thing ?property ?object .
+    }
+  }
+  ?object rdfs:label ?objectLabel .
+  FILTER (lang(?objectLabel) = "en")
+  BIND (if(lcase(substr(str(?objectLabel), 1, 1)) IN ("a", "e", "i", "o", "y"),
+           concat("an ", ?objectLabel),
+           concat("a ", ?objectLabel)) AS ?objectLabelWithArticle)
+  BIND (concat(?verb, " ", if(?hasArticle, ?objectLabelWithArticle, ?objectLabel)) AS ?notyourman)
+}
+LIMIT 5
