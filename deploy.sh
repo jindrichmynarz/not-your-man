@@ -18,3 +18,4 @@ cp -R resources/public/vendor .
 git add index.html js css vendor
 git commit -m "Deploy"
 git push
+git checkout master
