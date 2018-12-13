@@ -5,6 +5,7 @@ set -ex
 git checkout gh-pages
 
 # Build Clojurescript
+lein clean
 lein cljsbuild once min
 
 # Copy built files into root
