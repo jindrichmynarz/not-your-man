@@ -64,7 +64,7 @@
   (let [subject (re-frame/subscribe [::subs/subject])
         actual-subject (re-frame/subscribe [::subs/actual-subject])]
     [re-com/title
-     :label (format "He's not your %s, he's %s." @subject @actual-subject)
+     :label (format "He's not your %s. He's %s." @subject @actual-subject)
      :level :level1]))
 
 (defn another-man
