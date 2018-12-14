@@ -3,8 +3,6 @@
                  [org.clojure/clojurescript "1.10.439"]
                  [reagent "0.8.1"]
                  [re-frame "0.10.6"]
-                 [com.andrewmcveigh/cljs-time "0.5.2"]
-                 [org.clojure/core.async "0.4.490"]
                  [re-com "2.3.0"]
                  [cljs-ajax "0.8.0"]
                  [day8.re-frame/http-fx "0.1.6"]]

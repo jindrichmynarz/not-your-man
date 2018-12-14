@@ -2,3 +2,6 @@
 
 (def debug?
   ^boolean goog.DEBUG)
+
+(def preamble
+  "Ladies, if your")

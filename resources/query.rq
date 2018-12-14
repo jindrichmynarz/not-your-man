@@ -3,71 +3,59 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX wd:   <http://www.wikidata.org/entity/>
 PREFIX wdt:  <http://www.wikidata.org/prop/direct/>
 
-SELECT ?label ?notyourman
+SELECT DISTINCT ?thing ?label ?property ?notyourman
 WHERE {
   hint:Query hint:optimizer "None" .
   {
-    SELECT ?label ?object ?verb ?hasArticle
+    SELECT ?thing ?label ?property ?object
     WHERE {
       {
-        SELECT ?thing 
-               (if(lcase(substr(str(?_label), 1, 1)) IN ("a", "e", "i", "o", "y"),
-                   concat("an ", ?_label),
-                   concat("a ", ?_label)) AS ?label)
+        SELECT ?thing ?label (struuid() AS ?index)
         WHERE {
           {
-            SELECT ?thing
+            SELECT ?thing ?label
             WHERE {
-              {
-                SELECT ?class (struuid() AS ?index)
-                WHERE {
-                  VALUES ?class {
-                    wd:Q212920 # Home applicance
-                    wd:Q2424752 # Product
-                    wd:Q3314483 # Fruit
-                    wd:Q39546 # Tool
-                    wd:Q43229 # Organization
-                    wd:Q815741 # Geometric shape
-                    wd:Q11004 # Vegetable
-                  }
-                }
-                ORDER BY ?index
-                LIMIT 1
+              VALUES ?class {
+                wd:Q212920 # Home applicance
+                wd:Q2424752 # Product
+                wd:Q3314483 # Fruit
+                wd:Q39546 # Tool
+                wd:Q43229 # Organization
+                wd:Q815741 # Geometric shape
+                wd:Q11004 # Vegetable
               }
-              ?thing wdt:P279+ ?class ;
-                wdt:P276|wdt:P279|wdt:P366|wdt:P462|wdt:P495|wdt:P527|wdt:P1889 ?object .
+              ?thing wdt:P279 ?class ;
+                wdt:P276|wdt:P279|wdt:P366|wdt:P462|wdt:P495|wdt:P527|wdt:P1889 ?object ;
+                rdfs:label ?label .
+
+              FILTER (lang(?label) = "en"
+                      &&
+                      # Attempt to avoid proper nouns
+                      ucase(substr(str(?label), 1, 1)) != substr(str(?label), 1, 1)
+                      &&
+                      # Attempt to avoid plurals
+                      !strends(?label, "s"))
             }
-            GROUP BY ?thing 
-            HAVING (COUNT(?object) > 4)
+            GROUP BY ?thing ?label
+            HAVING (COUNT(?object) > 2)
           }
-          ?thing rdfs:label ?_label .
-          FILTER (lang(?_label) = "en"
-                  &&
-                  # Attempt to avoid proper nouns
-                  ucase(substr(str(?_label), 1, 1)) != substr(str(?_label), 1, 1)
-                  &&
-                  # Attempt to avoid plurals
-                  !strends(?_label, "s"))
         }
+        ORDER BY ?index
         LIMIT 1
       }
-      VALUES (?property ?verb           ?hasArticle) {
-             (wdt:P276  "is located in" true) # Location
-             (wdt:P279  "is"            true) # Subclass of
-             (wdt:P366  "is used for"   false) # Use
-             (wdt:P462  "is"            false) # Colour
-             (wdt:P495  "is from"       false) # Country of origin
-             (wdt:P527  "has"           true) # Has part
-             (wdt:P1889 "is not"        true) # Different from
+      VALUES ?property {
+              wdt:P276  # Location
+              wdt:P279  # Subclass of
+              wdt:P366  # Use
+              wdt:P462  # Colour
+              wdt:P495  # Country of origin
+              wdt:P527  # Has part
+              wdt:P1889 # Different from
       }
       ?thing ?property ?object .
     }
   }
-  ?object rdfs:label ?objectLabel .
-  FILTER (lang(?objectLabel) = "en")
-  BIND (if(lcase(substr(str(?objectLabel), 1, 1)) IN ("a", "e", "i", "o", "y"),
-           concat("an ", ?objectLabel),
-           concat("a ", ?objectLabel)) AS ?objectLabelWithArticle)
-  BIND (concat(?verb, " ", if(?hasArticle, ?objectLabelWithArticle, ?objectLabel)) AS ?notyourman)
+  ?object rdfs:label ?notyourman .
+  FILTER (lang(?notyourman) = "en")
 }
 LIMIT 5
