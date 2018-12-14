@@ -1,10 +1,11 @@
 (ns not-your-man.subs
   "Subscriptions should allow views not to have a clue about the database schema.
   However, in simple cases they end up as trivial lookups."
-  (:require [not-your-man.wikidata :as wdt]
+  (:require [not-your-man.config :as config]
+            [not-your-man.wikidata :as wdt]
             [clojure.string :as string]
             [goog.string :refer [format]]
-            [re-frame.core :refer [reg-sub]]))
+            [re-frame.core :refer [reg-sub subscribe]]))
 
 (def compact-iri
   (let [skip (count wdt/nspace)]
@@ -38,3 +39,17 @@
 (reg-sub ::not-your-man
    (fn [{:keys [not-your-man]}]
      (map verbalize not-your-man)))
+
+(reg-sub ::tweet
+   (fn [& _]
+     [(subscribe [::subject])
+      (subscribe [::not-your-man])
+      (subscribe [::verdict])])
+   (fn [[subject not-your-man verdict] _]
+     (let [lines (concat [(str config/preamble " " subject ":\n")]
+                         (map (partial str "- ") not-your-man)
+                         [(str \newline verdict)])]
+      (->> lines
+           (string/join \newline)
+           js/encodeURIComponent
+           (str "https://twitter.com/intent/tweet?text=")))))

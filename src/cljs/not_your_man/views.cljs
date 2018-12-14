@@ -2,6 +2,7 @@
   (:require [re-frame.core :refer [dispatch subscribe]]
             [re-com.core :as re-com]
             [not-your-man.events :as events]
+            [not-your-man.config :as config]
             [not-your-man.subs :as subs]
             [goog.string :refer [format]]))
 
@@ -38,7 +39,7 @@
 
 (defn preamble
   []
-  [re-com/title :label "Ladies, if your" 
+  [re-com/title :label config/preamble
                 :level :level1])
 
 (defn input
@@ -73,10 +74,13 @@
 
 (defn tweet-button
   []
-  [re-com/md-icon-button :md-icon-name "zmdi-twitter"
-                         :size :larger
-                         :tooltip "Tweet this wisdom!"
-                         :tooltip-position :right-center])
+  (let [url @(subscribe [::subs/tweet])]
+    [re-com/hyperlink-href :class "rc-icon-larger"
+                           :href url
+                           :label [:i.zmdi.zmdi-twitter]
+                           :target "_blank"
+                           :tooltip "Tweet this wisdom!"
+                           :tooltip-position :right-center]))
 
 (defn buttons
   []
