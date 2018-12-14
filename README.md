@@ -1,6 +1,6 @@
 # not-your-man
 
-A [re-frame](https://github.com/Day8/re-frame) application designed to ... well, that part is up to you.
+I was amused by [Not Your Bot](https://twitter.com/notyourbot1) and I wanted to try [re-frame](https://github.com/Day8/re-frame), so I made a clone that sources its data from [Wikidata](https://www.wikidata.org).
 
 Built using the [re-frame Leiningen template](https://github.com/Day8/re-frame-template).
 
