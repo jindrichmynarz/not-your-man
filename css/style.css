@@ -23,3 +23,19 @@ ul#not-your-man li:before {
 .footer {
   margin: 2em 0;
 }
+
+.footer a:hover {
+  text-decoration: none;
+}
+
+/* Only show tooltips if :hover is supported. */
+
+.rc-popover-point {
+  display: none;
+}
+
+@media (hover: hover) {
+  .rc-popover-point {
+    display: block;
+  }
+}
