@@ -3,11 +3,11 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX wd:   <http://www.wikidata.org/entity/>
 PREFIX wdt:  <http://www.wikidata.org/prop/direct/>
 
-SELECT ?label ?property ?notyourman
+SELECT DISTINCT ?thing ?label ?property ?notyourman
 WHERE {
   hint:Query hint:optimizer "None" .
   {
-    SELECT ?label ?property ?object
+    SELECT ?thing ?label ?property ?object
     WHERE {
       {
         SELECT ?thing ?label (struuid() AS ?index)
@@ -37,7 +37,7 @@ WHERE {
                       !strends(?label, "s"))
             }
             GROUP BY ?thing ?label
-            HAVING (COUNT(?object) > 4)
+            HAVING (COUNT(?object) > 2)
           }
         }
         ORDER BY ?index
