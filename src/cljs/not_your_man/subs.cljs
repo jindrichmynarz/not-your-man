@@ -1,27 +1,19 @@
 (ns not-your-man.subs
-  (:require [re-frame.core :as re-frame]))
+  "Subscriptions should allow views not to have a clue about the database schema.
+  However, in simple cases they end up as trivial lookups."
+  (:require [re-frame.core :refer [reg-sub]]
+            [goog.string :refer [format]]))
 
-(re-frame/reg-sub
-  ::error
-  (fn [{:keys [error]}] error))
+(reg-sub ::error (comp :status-text :error))
 
-(re-frame/reg-sub
-  ::loading?
-  (fn [{:keys [loading?]}] loading?))
+(reg-sub ::loading? :loading?)
 
-(re-frame/reg-sub
-  ::modal?
-  (fn [{:keys [error loading?]}]
-    (or error loading?)))
+(reg-sub ::modal? (some-fn :error :loading?))
 
-(re-frame/reg-sub
-  ::subject
-  (fn [{:keys [subject]}] subject))
+(reg-sub ::subject :subject)
 
-(re-frame/reg-sub
-  ::actual-subject
-  (fn [{:keys [label]}] label))
+(reg-sub ::verdict
+  (fn [{:keys [label subject]}]
+    (format "He's not your %s. He's %s." subject label)))
 
-(re-frame/reg-sub
-  ::not-your-man
-  (fn [{:keys [not-your-man]}] not-your-man))
+(reg-sub ::not-your-man :not-your-man)
