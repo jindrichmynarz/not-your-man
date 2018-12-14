@@ -1,8 +1,25 @@
 (ns not-your-man.subs
   "Subscriptions should allow views not to have a clue about the database schema.
   However, in simple cases they end up as trivial lookups."
-  (:require [re-frame.core :refer [reg-sub]]
-            [goog.string :refer [format]]))
+  (:require [not-your-man.wikidata :as wdt]
+            [clojure.string :as string]
+            [goog.string :refer [format]]
+            [re-frame.core :refer [reg-sub]]))
+
+(def compact-iri
+  (let [skip (count wdt/nspace)]
+    (fn [iri]
+      (keyword 'not-your-man.wikidata (subs iri skip)))))
+
+(defn add-article
+  [s]
+  (let [indefinite-article (if (-> s first string/lower-case #{\a \e \i \o}) "an" "a")]
+    (str indefinite-article " " s)))
+
+(defn verbalize
+  [{:keys [property notyourman]}]
+  (let [{:keys [article? verb]} (-> property compact-iri wdt/properties)]
+    (str verb " " (if article? (add-article notyourman) notyourman))))
 
 (reg-sub ::error (comp :status-text :error))
 
@@ -14,6 +31,10 @@
 
 (reg-sub ::verdict
   (fn [{:keys [label subject]}]
-    (format "He's not your %s. He's %s." subject label)))
+    (format "He's not your %s. He's %s."
+            subject
+            (if label (add-article label) "something else"))))
 
-(reg-sub ::not-your-man :not-your-man)
+(reg-sub ::not-your-man
+   (fn [{:keys [not-your-man]}]
+     (map verbalize not-your-man)))

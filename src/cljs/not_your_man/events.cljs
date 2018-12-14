@@ -4,7 +4,7 @@
             [not-your-man.db :as db])
   (:require-macros [not-your-man.macros :refer [read-file]]))
 
-(defonce default-query
+(def default-query
   (read-file "resources/query.rq"))
 
 ; ----- Private functions -----
@@ -21,18 +21,10 @@
   [query]
   (str "# " (rand-str (rand-int 10)) "\n" query))
 
-; ----- Parsing SPARQL results
-
-(defmulti parse-sparql-value :type)
-
-(defmethod parse-sparql-value "literal"
-  [{:keys [value]}]
-  value)
-
 (defn parse-sparql-binding
   [b]
   (->> b
-       (map (juxt key (comp parse-sparql-value val)))
+       (map (juxt key (comp :value val)))
        (into {})))
 
 (defn parse-sparql-results
@@ -74,7 +66,7 @@
     (-> db
         (dissoc :loading?)
         (assoc :label label
-               :not-your-man (map :notyourman results)))))
+               :not-your-man results))))
 
 (re-frame/reg-event-db
   ::query-error
