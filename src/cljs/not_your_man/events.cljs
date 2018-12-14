@@ -62,11 +62,12 @@
 (re-frame/reg-event-db
   ::query-results
   [parse-sparql-results-interceptor]
-  (fn [db [_ [{:keys [label]} & _ :as results]]]
+  (fn [db [_ [{:keys [label thing]} & _ :as results]]]
     (-> db
         (dissoc :loading?)
         (assoc :label label
-               :not-your-man results))))
+               :not-your-man results
+               :thing thing))))
 
 (re-frame/reg-event-db
   ::query-error

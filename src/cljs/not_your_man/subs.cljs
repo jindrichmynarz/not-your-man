@@ -30,11 +30,18 @@
 
 (reg-sub ::subject :subject)
 
+(reg-sub ::actual-subject
+  (fn [{:keys [label]}]
+    (if label (add-article label) "something else")))
+
+(reg-sub ::thing :thing)
+
 (reg-sub ::verdict
-  (fn [{:keys [label subject]}]
-    (format "He's not your %s. He's %s."
-            subject
-            (if label (add-article label) "something else"))))
+  (fn [& _]
+    [(subscribe [::subject])
+     (subscribe [::actual-subject])])
+  (fn [[subject actual-subject] _]
+    [(format "He's not your %s. He's " subject) actual-subject]))
 
 (reg-sub ::not-your-man
    (fn [{:keys [not-your-man]}]
@@ -45,10 +52,10 @@
      [(subscribe [::subject])
       (subscribe [::not-your-man])
       (subscribe [::verdict])])
-   (fn [[subject not-your-man verdict] _]
+   (fn [[subject not-your-man [verdict actual-subject]] _]
      (let [lines (concat [(str config/preamble " " subject ":\n")]
                          (map (partial str "- ") not-your-man)
-                         [(str \newline verdict)])]
+                         [(str \newline verdict actual-subject ".")])]
       (->> lines
            (string/join \newline)
            js/encodeURIComponent

@@ -59,11 +59,12 @@
 
 (defn verdict
   []
-  (let [text @(subscribe [::subs/verdict])]
-    [re-com/title :label text
+  (let [[text actual-subject] @(subscribe [::subs/verdict])
+        url @(subscribe [::subs/thing])]
+    [re-com/title :label [:p text [:a {:href url} actual-subject] "."]
                   :level :level1]))
 
-(defn another-man
+(defn another-man!
   []
   (let [subject (subscribe [::subs/subject])]
     [re-com/md-icon-button :md-icon-name "zmdi-refresh"
@@ -86,7 +87,7 @@
   []
   [re-com/h-box :gap "2em"
                 :justify :center
-                :children [[another-man] [tweet-button]]])
+                :children [[another-man!] [tweet-button]]])
 
 (defn footer
   []
