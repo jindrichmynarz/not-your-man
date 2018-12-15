@@ -1,13 +1,19 @@
 (ns not-your-man.events
   (:require [re-frame.core :as re-frame :refer [->interceptor]]
             [ajax.core :as ajax]
-            [not-your-man.db :as db])
+            [clojure.string :as string]
+            [not-your-man.db :as db]
+            [not-your-man.wikidata :as wdt])
   (:require-macros [not-your-man.macros :refer [read-file]]))
 
 (def default-query
   (read-file "resources/query.rq"))
 
 ; ----- Private functions -----
+
+(defn- insert-random-class
+  [query]
+  (string/replace query "wd:CLASS" (rand-nth wdt/classes)))
 
 (defn- rand-str
   [length]
@@ -49,7 +55,7 @@
      :http-xhrio {:method          :get
                   :uri             endpoint
                   :timeout         timeout
-                  :params          {:query (beat-query-caching query)}
+                  :params          {:query (-> query insert-random-class beat-query-caching)}
                   :response-format (ajax/json-response-format {:keywords? true}) 
                   :on-success      on-success
                   :on-failure      [::query-error]}}))

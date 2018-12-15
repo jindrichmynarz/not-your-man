@@ -15,29 +15,14 @@ WHERE {
           {
             SELECT ?thing ?label
             WHERE {
-              VALUES ?class {
-                wd:Q212920 # Home applicance
-                wd:Q2424752 # Product
-                wd:Q3314483 # Fruit
-                wd:Q39546 # Tool
-                wd:Q43229 # Organization
-                wd:Q815741 # Geometric shape
-                wd:Q11004 # Vegetable
-              }
-              ?thing wdt:P279 ?class ;
-                wdt:P276|wdt:P279|wdt:P366|wdt:P462|wdt:P495|wdt:P527|wdt:P1889 ?object ;
+              ?thing wdt:P279 wd:CLASS ;
+                wdt:P276|wdt:P279|wdt:P366|wdt:P462|wdt:P495|wdt:P527|wdt:P1889|wdt:P2283 ?object ;
                 rdfs:label ?label .
 
-              FILTER (lang(?label) = "en"
-                      &&
-                      # Attempt to avoid proper nouns
-                      ucase(substr(str(?label), 1, 1)) != substr(str(?label), 1, 1)
-                      &&
-                      # Attempt to avoid plurals
-                      !strends(?label, "s"))
+              FILTER (lang(?label) = "en")
             }
             GROUP BY ?thing ?label
-            HAVING (COUNT(?object) > 2)
+            HAVING (COUNT(?object) > 3)
           }
         }
         ORDER BY ?index
@@ -51,11 +36,12 @@ WHERE {
               wdt:P495  # Country of origin
               wdt:P527  # Has part
               wdt:P1889 # Different from
+              wdt:P2283 # Uses
       }
       ?thing ?property ?object .
     }
   }
   ?object rdfs:label ?notyourman .
-  FILTER (lang(?notyourman) = "en")
+  FILTER (lang(?notyourman) = "en" && ?notyourman != ?label)
 }
 LIMIT 5
