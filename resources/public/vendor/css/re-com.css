@@ -19,14 +19,15 @@
 }
 
 html, body {
-    font-family:    Segoe UI, Roboto, sans-serif;
+    font-family:    Segoe UI, Nunito, sans-serif;
     font-size:      14px;
     font-weight:    400;
-    color:          rgba(68, 68, 68, 1.0);
+    color:          #2B3A42;
     letter-spacing: 0.002em;
     height:         100%;
     margin:         0px;
     padding:        0px;
+    background-color: #EFEFEF;
 }
 
 /*----------------------------------------------------------------------------------------
@@ -34,7 +35,7 @@ html, body {
 ----------------------------------------------------------------------------------------*/
 
 .popover, .tooltip {
-    font-family: Segoe UI, Roboto, sans-serif;
+    font-family: Segoe UI, Nunito, sans-serif;
 }
 
 .popover-title {
@@ -1110,7 +1111,7 @@ code {
 }
 
 .rc-md-icon-button:hover {
-    color: #2196f3;
+    color: #FF530D;
 }
 
 .rc-icon-smaller {
@@ -1273,36 +1274,36 @@ code {
 }
 
 .level1 {
-    font-family:    Roboto, sans-serif;
+    font-family:    Nunito, sans-serif;
     font-weight:    200;
     font-size:      40px;
-    color:          rgba(68, 68, 68, 1.0);
+    color:          #2B3A42;
     letter-spacing: normal;
     /*-ms-font-feature-settings:    'ss20' 1;*/
 }
 .level2 {
-    font-family:    Roboto, sans-serif;
+    font-family:    Nunito, sans-serif;
     font-weight:    200;
     font-size:      26px;
     color:          rgba(0, 0, 0, 1.0);
     letter-spacing: 0.001em;
 }
 .level3 {
-    font-family:    Roboto, sans-serif;
+    font-family:    Nunito, sans-serif;
     font-weight:    500;
     font-size:      15px;
-    color:          rgba(68, 68, 68, 1.0);
+    color:          #2B3A42;
     letter-spacing: 0.002em;
 }
 .level4 {
-    font-family:    Roboto, sans-serif;
+    font-family:    Nunito, sans-serif;
     font-weight:    500;
     font-size:      15px;
     color:          rgba(68, 68, 68, 0.6);
     letter-spacing: 0.002em;
 }
 .field-label {
-    font-family:    Roboto, sans-serif;
+    font-family:    Nunito, sans-serif;
     font-weight:    400;
     font-size:      14px;
     color:          rgba(68, 68, 68, 0.6);
