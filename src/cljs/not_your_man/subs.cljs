@@ -24,7 +24,9 @@
 
 (reg-sub ::error (comp :status-text :error))
 
-(reg-sub ::loading? :loading?)
+(reg-sub ::loading?
+  (fn [{:keys [loading?]}]
+    loading?))
 
 (reg-sub ::modal? (some-fn :error :loading?))
 

@@ -1,7 +1,9 @@
 .inline-input {
+  display: inline-block;
   border: 0;
   box-shadow: none;
   padding: 1em .3em;
+  background-color: #EFEFEF;
 }
 
 .inline-input:focus {
@@ -38,4 +40,18 @@ ul#not-your-man li:before {
   .rc-popover-point {
     display: block;
   }
+}
+
+a, a:hover, a:focus {
+  color: #FF530D;
+}
+
+.alert-danger {
+  color: #EFEFEF;
+  background-color: #3F5765;
+  border-color: #2B3A42;
+}
+
+.rc-modal-panel-container {
+  box-shadow: 0 0 15em #2B3A42;
 }

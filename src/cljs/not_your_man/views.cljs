@@ -11,12 +11,9 @@
   (let [loading? (subscribe [::subs/loading?])
         subject (subscribe [::subs/subject])]
     (when @loading?
-      [re-com/h-box
-       :children [[re-com/title
-                   :label (format "Loading your %s..." @subject)
-                   :level :level2]
-                  [re-com/throbber
-                   :color "#000"]]])))
+      [re-com/h-box :children [[re-com/title :label (format "Loading your %s..." @subject)
+                                             :level :level2]
+                               [re-com/throbber :color "#000"]]])))
 
 (defn hide-error
   []
@@ -35,7 +32,8 @@
 (defn modal
   []
   (when @(subscribe [::subs/modal?])
-    [re-com/modal-panel :child [re-com/h-box :children [[loading-indicator] [error]]]]))
+    [re-com/modal-panel :backdrop-color "#3F5765"
+                        :child [re-com/h-box :children [[loading-indicator] [error]]]]))
 
 (defn preamble
   []
