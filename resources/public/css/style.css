@@ -1,4 +1,5 @@
 .inline-input {
+  display: inline-block;
   border: 0;
   box-shadow: none;
   padding: 1em .3em;
