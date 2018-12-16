@@ -4,7 +4,6 @@
 
 (def classes
   ["wd:Q212920" ; Home applicance
-   "wd:Q23698381" ; Information object
    "wd:Q2424752" ; Product
    "wd:Q3314483" ; Fruit
    "wd:Q39546" ; Tool
