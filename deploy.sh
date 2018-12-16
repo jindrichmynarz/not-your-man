@@ -3,6 +3,7 @@
 set -ex
 
 git checkout gh-pages
+git merge --no-edit master
 
 # Build Clojurescript
 lein clean
