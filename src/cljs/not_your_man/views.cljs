@@ -58,8 +58,11 @@
 (defn verdict
   []
   (let [[text actual-subject] @(subscribe [::subs/verdict])
-        url @(subscribe [::subs/thing])]
-    [re-com/title :label [:p text [:a {:href url} actual-subject] "."]
+        url @(subscribe [::subs/thing])
+        thing (if url
+                [:a {:href (or url "#")} actual-subject]
+                actual-subject)]
+    [re-com/title :label [:p text thing "."]
                   :level :level1]))
 
 (defn another-man!

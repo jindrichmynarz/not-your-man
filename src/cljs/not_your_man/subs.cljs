@@ -36,7 +36,9 @@
   (fn [{:keys [label]}]
     (if label (add-article label) "something else")))
 
-(reg-sub ::thing :thing)
+(reg-sub ::thing 
+  (fn [{:keys [thing]}]
+    thing))
 
 (reg-sub ::verdict
   (fn [& _]
